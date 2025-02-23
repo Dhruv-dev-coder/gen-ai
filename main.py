@@ -85,14 +85,13 @@ if ip.strip():
         with st.spinner("⏳ Generating your story..."):
             result = text_generator(
                 prompt,
-                max_length=300,#Extended length to ensure complete response
-                temperature=0.85,  # Boost creativity while maintaining coherence
-                top_p=0.95,  # Allows for more diverse word selection
+                min_length=300,
+                max_length=500,#Extended length to ensure complete response
+                temperature=0.5,  # Boost creativity while maintaining coherence
+                top_p=0.8,  # Allows for more diverse word selection
                 num_return_sequences=1,  # Ensures one high-quality output
-                pad_token_id=50256,
-                eos_token_id=None,  # Prevents premature stopping
                 repetition_penalty=1.1,  # Reduces excessive repetition without cutting text
-                truncation=True
+
 
             )
         st.success("✅ Generated Story:")
