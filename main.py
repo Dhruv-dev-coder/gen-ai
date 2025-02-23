@@ -13,7 +13,7 @@ st.subheader("Generate AI-based Text")
 prompt = st.text_area("Enter a prompt:")
 if st.button("Generate Text"):
     with st.spinner("Generating..."):
-        result = text_generator(prompt, max_length=100)[0]['generated_text']
+        result = text_generator(prompt)[0]['generated_text']
     st.success("Generated Text:")
     st.write(result)
 
