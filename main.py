@@ -5,7 +5,7 @@ from transformers import pipeline
 # Load text generation model
 @st.cache_resource
 def load_text_generator():
-    return pipeline("text-generation", model="gpt2-medium")  # Same model, just ensuring caching
+    return pipeline("text-generation", model="gpt2")  # Upgraded to gpt2-medium for better results
 
 
 # Load emotion classification model
@@ -14,16 +14,15 @@ def load_emotion_classifier():
     return pipeline("text-classification", model="j-hartmann/emotion-english-distilroberta-base")
 
 
-# Load models
-text_generator = load_text_generator()
-emotion_classifier = load_emotion_classifier()
-
-
 # Function to detect emotion from text
 def detect_emotion(text):
     emotion = emotion_classifier(text)
-    return emotion[0]['label'].lower()  # Ensures consistency in case formatting
+    return emotion[0]['label']
 
+
+# Load models
+text_generator = load_text_generator()
+emotion_classifier = load_emotion_classifier()
 
 # Streamlit UI
 st.title("🎭 AI-Powered Emotion-Based Story Generator")
@@ -76,6 +75,8 @@ if ip.strip():
         "helplessness": "Generate a short story about someone feeling helpless but eventually finding empowerment. Add an unexpected ally who helps them regain control."
     }
 
+
+
     # Get the corresponding prompt or use a default fallback
     prompt = emotion_prompts.get(detected_emotion, "Generate a short, meaningful story about overcoming challenges.")
 
@@ -84,17 +85,17 @@ if ip.strip():
         with st.spinner("⏳ Generating your story..."):
             result = text_generator(
                 prompt,
-                min_length=200,
-                max_length=500,  # Reduced for faster output
-                temperature=0.7,  # Adjusted for speed
-                top_p=0.9,  # Balanced sampling
-                num_return_sequences=1,
-                pad_token_id=50256,  # Fixes token issue
-                eos_token_id=50256,
-                do_sample=True,
-                truncation=True# Ensures proper stopping
+                max_length=300,#Extended length to ensure complete response
+                temperature=0.85,  # Boost creativity while maintaining coherence
+                top_p=0.95,  # Allows for more diverse word selection
+                num_return_sequences=1,  # Ensures one high-quality output
+                pad_token_id=50256,
+                eos_token_id=None,  # Prevents premature stopping
+                repetition_penalty=1.1,  # Reduces excessive repetition without cutting text
+                truncation=True
+
             )
         st.success("✅ Generated Story:")
-        st.write(result[0]['generated_text'])  # Ensures story is displayed properly
+        st.write(result[0]['generated_text'])
 else:
     st.warning("⚠ Please enter a prompt to generate a story.")
