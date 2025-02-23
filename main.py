@@ -1,7 +1,6 @@
 import streamlit as st
 from transformers import pipeline
 
-@st.cache_resource()
 def load_text_generator():
     return pipeline("text-generation", model="gpt2")
 
