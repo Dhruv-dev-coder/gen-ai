@@ -5,7 +5,7 @@ from transformers import pipeline
 # Load text generation model
 @st.cache_resource
 def load_text_generator():
-    return pipeline("text-generation", model="gpt2-large")  # Same model, just ensuring caching
+    return pipeline("text-generation", model="gpt2-medium")  # Same model, just ensuring caching
 
 
 # Load emotion classification model
