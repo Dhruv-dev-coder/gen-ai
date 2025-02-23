@@ -90,7 +90,9 @@ if ip.strip():
                 top_p=0.9,  # Balanced sampling
                 num_return_sequences=1,
                 pad_token_id=50256,  # Fixes token issue
-                eos_token_id=50256  # Ensures proper stopping
+                eos_token_id=50256,
+                do_sample=True,
+                truncation=True# Ensures proper stopping
             )
         st.success("✅ Generated Story:")
         st.write(result[0]['generated_text'])  # Ensures story is displayed properly
